@@ -22,13 +22,14 @@ import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private List<VideoBean> itemInfos;
+    public  List<VideoBean> itemInfos;
     private Context mContext;
     private LayoutInflater mInflater;
 
     private  final  int TYPE_ITEM=0;
     private  final int TYPE_FOOTER=1;
     private  View mFooterView;
+
     public RecyclerAdapter(Context context, List<VideoBean> list) {
         mContext=context;
         itemInfos=list;
@@ -42,7 +43,24 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     public void setFooterView(View footerView) {
         mFooterView = footerView;
-        notifyItemInserted(getItemCount()-1);
+        if(getItemCount()>0){
+            notifyItemInserted(getItemCount()-1);
+        }else{
+            notifyItemInserted(0);
+        }
+
+    }
+
+
+    public void setNoMoreDataView(){
+        if(mFooterView!=null){
+            mFooterView.setVisibility(View.GONE);
+        }
+    }
+    public  void setNoNetFooterView(){
+        if(mFooterView!=null){
+            mFooterView.setVisibility(View.GONE);
+        }
     }
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -80,6 +98,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         else if(getItemViewType(position)==TYPE_FOOTER){
             if(holder instanceof  FooterViewHolder){
                 ((FooterViewHolder)holder).mTextView.setText("正在加载更多....");
+                //((FooterViewHolder)holder).mTextView.setVisibility(View.VISIBLE);
             }
         }
     }
